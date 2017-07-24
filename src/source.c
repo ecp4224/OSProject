@@ -63,7 +63,7 @@ int main(int argc, char * argv[]){
         printf("Sorting with %d threads.\n", i);
 
         for (j = 0; j < i; i++){
-                pthread_create(&p_tids, NULL, threadFunc,void( *));
+                pthread_create(&p_tids, NULL, threadFunc,void( *)/*POINTERTOFIRSTITEMINARRAY*/);
                 p_tids++;
                 
         }
