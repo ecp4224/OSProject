@@ -6,18 +6,40 @@
 #include<fcntl.h>
 #include<pthread.h>
 
+#define KEYSIZE 8
+#define DATASIZE 56
+
+struct Record{
+        char key[KEYSIZE];
+        char data[DATASIZE];
+}
+
 int fd;
 char *addr;
 
 //put functions here
 
+int compareKey(const char * key1, const char * key2){ // returns 0 if equal, -1 if k1<k2, 1 if k1>k2
+	return strncpy(key1, key2, KEYSIZE); // <string.h>
+}
+
+int sortThread()
+
+int *threadFunc(void *param){
+        qsort(param, /*NUMBEROFITEMS*/, KEYSIZE, compareKey);
+}
+
+        
 int main(int argc, char * argv[]){
         struct stat sb;
         int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
-        static pthread_t * p_tids;
+        pthread_t * p_tids;
         long pageSize = sysconf(_SC_PAGESIZE);
 
         printf("Number of logical processors: %d\n", numCPU);
+        if (argc != 2){
+                printf("Usage: %s file\n", argv[0]);
+        }
 
         fd = open(argv[1], O_RDONLY);
         if (fd==-1){
@@ -29,7 +51,6 @@ int main(int argc, char * argv[]){
                 exit(EXIT_FAILURE);
         }
         
-
         addr = mmap(NULL, chunksize, PROT_READ, MAP_PRIVATE, fd, 0);
         if(addr == MAP_FAILED){
                 printf("mmap failed \n");
@@ -42,7 +63,8 @@ int main(int argc, char * argv[]){
         printf("Sorting with %d threads.\n", i);
 
         for (j = 0; j < i; i++){
-                pthread_create(&pid1, NULL, threadFunc,0);
+                pthread_create(&p_tids, NULL, threadFunc,void( *));
+                p_tids++;
                 
         }
         pthread_exit(NULL);
