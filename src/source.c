@@ -14,7 +14,7 @@ char *addr;
 int main(int argc, char * argv[]){
         struct stat sb;
         int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
-        pthread_t pid1;
+        static pthread_t * p_tids;
         long pageSize = sysconf(_SC_PAGESIZE);
 
         printf("Number of logical processors: %d\n", numCPU);
@@ -28,22 +28,22 @@ int main(int argc, char * argv[]){
                 printf("fstat error\n");
                 exit(EXIT_FAILURE);
         }
-        chunksize = sb.st_size/4;
+        
 
         addr = mmap(NULL, chunksize, PROT_READ, MAP_PRIVATE, fd, 0);
         if(addr == MAP_FAILED){
                 printf("mmap failed \n");
                 exit(EXIT_FAILURE);
         }
-        int os = 0;
+        
         int i;
         printf("Please input an integer value for the number of threads to use: ");
         scanf("%d", &i);
         printf("Sorting with %d threads.\n", i);
 
         for (j = 0; j < i; i++){
-                pthread_create(&pid1, NULL, threadFunc,(void *)os);
-                os+=chunksize;
+                pthread_create(&pid1, NULL, threadFunc,0);
+                
         }
         pthread_exit(NULL);
         close(fd);
