@@ -106,8 +106,8 @@ int main(int argc, char * argv[]){
         long pageSize = sysconf(_SC_PAGESIZE);
 
         printf("Number of logical processors: %d\n", numCPU);
-        if (argc != 2){
-                printf("Usage: %s file\n", argv[0]);
+        if (argc != 3){
+                printf("Usage: %s file threads\n", argv[0]);
         }
 
         fd = fopen(argv[1], "r");
@@ -134,9 +134,7 @@ int main(int argc, char * argv[]){
         //        exit(EXIT_FAILURE);
         //}
         
-        int i;
-        printf("Please input an integer value for the number of threads to use: ");
-        scanf("%d", &i);
+        int i = argv[2];
         printf("Sorting with %d threads.\n", i);
         TotalThreads = i;
 
